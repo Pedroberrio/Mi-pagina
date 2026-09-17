@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>draev.col</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #080808;
+            --card-bg: #121212;
+            --accent-color: #ffffff;
+            --text-main: #f3f4f6;
+            --text-muted: #a1a1aa;
+            --border-color: #27272a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* HEADER / NAVBAR */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(8, 8, 8, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 6px;
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--accent-color);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .icon-btn {
+            position: relative;
+            cursor: pointer;
+            font-size: 18px;
+            color: #fff;
+            transition: transform 0.2s;
+        }
+
+        .icon-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background-color: #fff;
+            color: #000;
+            font-size: 10px;
+            font-weight: 800;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* VIEW MANAGEMENT */
+        .view-page {
+            display: none;
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+
+        .view-page.active {
+            display: block;
+        }
+
+        /* HERO SLIDER (CARROUSEL DE IMÁGENES) */
+        .hero-slider {
+            position: relative;
+            height: 85vh;
+            overflow: hidden;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.65);
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+        }
+
+        .brand-title {
+            font-size: 56px;
+            font-weight: 800;
+            letter-spacing: 12px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .brand-slogan {
+            font-size: 15px;
+            letter-spacing: 4px;
+            color: #d1d5db;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .slider-controls {
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 10;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .dot.active {
+            background: #fff;
+            width: 30px;
+            border-radius: 6px;
+        }
+
+        /* GENERAL SECTION STYLES */
+        section {
+            padding: 60px 8%;
+        }
+
+        .section-title {
+            font-size: 26px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #fff;
+            color: #000;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-decoration: none;
+            border-radius: 2px;
+            transition: all 0.3s;
+            border: 1px solid #fff;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .btn-primary:hover {
+            background-color: #000;
+            color: #fff;
+        }
+
+        /* LINEAS DE DISEÑO - VISTA PRINCIPAL */
+        .lines-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .line-card {
+            position: relative;
+            height: 380px;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+        }
+
+        .line-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            filter: grayscale(80%);
+        }
+
+        .line-card:hover img {
+            transform: scale(1.05);
+            filter: grayscale(0%);
+        }
+
+        .line-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 30px;
+        }
+
+        .line-overlay h3 {
+            font-size: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        /* PRODUCTOS - CATALOGO */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 4px;
+        }
+
+        .product-img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            margin-bottom: 15px;
+            filter: grayscale(20%);
+        }
+
+        .product-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .product-price {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #e5e7eb;
+        }
+
+        /* FORMULARIOS (AUTH Y EMPLEO) */
+        .form-container {
+            max-width: 500px;
+            margin: 40px auto;
+            background-color: var(--card-bg);
+            padding: 35px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background-color: #080808;
+            border: 1px solid var(--border-color);
+            color: #fff;
+            border-radius: 2px;
+            font-size: 13px;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #fff;
+        }
+
+        /* EQUIPO DE TRABAJO */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .team-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 25px;
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        .team-card img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            filter: grayscale(100%);
+            border: 2px solid var(--border-color);
+        }
+
+        .team-card h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .team-card .role {
+            color: var(--text-muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .team-card p {
+            font-size: 13px;
+            color: #d1d5db;
+            text-align: justify;
+        }
+
+        /* MODAL Y CARRITO */
+        .cart-modal {
+            position: fixed;
+            top: 0;
+            right: -420px;
+            width: 400px;
+            height: 100vh;
+            background-color: #0d0d0d;
+            border-left: 1px solid var(--border-color);
+            z-index: 2000;
+            padding: 25px;
+            transition: right 0.4s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-modal.open {
+            right: 0;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .close-btn {
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .cart-items {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #1a1a1a;
+            padding-bottom: 10px;
+        }
+
+        /* PASARELA DE PAGO MODAL */
+        .checkout-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .checkout-modal.active {
+            display: flex;
+        }
+
+        .checkout-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        /* FOOTER CORPORATIVO */
+        footer {
+            background-color: #040404;
+            border-top: 1px solid var(--border-color);
+            padding: 50px 8% 20px;
+            margin-top: 60px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h4 {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .footer-col p, .footer-col a {
+            color: var(--text-muted);
+            font-size: 13px;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            font-size: 18px;
+        }
+
+        .social-links a {
+            color: #fff;
+            transition: 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--text-muted);
+        }
+
+        .copyright {
+            text-align: center;
+            font-size: 11px;
+            color: #555;
+            border-top: 1px solid #1a1a1a;
+            padding-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            nav ul { display: none; }
+            .cart-modal { width: 100%; }
+            .brand-title { font-size: 36px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header>
+        <a href="#" onclick="showPage('inicio')" class="logo">D R &#923; E V</a>
+        <nav>
+            <ul>
+                <li><a onclick="showPage('inicio')">Inicio</a></li>
+                <li><a onclick="showPage('lineas-main')">Líneas de Diseño</a></li>
+                <li><a onclick="showPage('historia')">Nuestra Historia</a></li>
+                <li><a onclick="showPage('quienes-somos')">Quiénes Somos</a></li>
+                <li><a onclick="showPage('equipo-portal')">Equipo</a></li>
+                <li><a onclick="showPage('trabaja-portal')">Trabaja con Nosotros</a></li>
+            </ul>
+        </nav>
+        <div class="nav-actions">
+            <div class="icon-btn" onclick="showPage('auth')" title="Iniciar Sesión / Registro">
+                <i class="fa-regular fa-user"></i>
+            </div>
+            <div class="icon-btn" onclick="toggleCart()" title="Carrito">
+                <i class="fa-solid fa-bag-shopping"></i>
+                <div class="cart-count" id="cart-count">0</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- PAGE: INICIO -->
+    <div id="page-inicio" class="view-page active" style="padding-top: 60px;">
+        <!-- BANNER SLIDER -->
+        <div class="hero-slider">
+            <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1600&q=80');">
+                <div class="hero-content">
+                    <div class="brand-title">D R &#923; E V</div>
+                    <div class="brand-slogan">Disciplina silenciosa, presencia absoluta</div>
+                    <button onclick="showPage('lineas-main')" class="btn-primary">Explorar Colección</button>
+                </div>
+            </div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1600&q=80');">
+                <div class="hero-content">
+                    <div class="brand-title">D R &#923; E V</div>
+                    <div class="brand-slogan">Elegancia Urbana Minimalista</div>
+                    <button onclick="showPage('lineas-main')" class="btn-primary">Ver Líneas de Diseño</button>
+                </div>
+            </div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?auto=format&fit=crop&w=1600&q=80');">
+                <div class="hero-content">
+                    <div class="brand-title">D R &#923; E V</div>
+                    <div class="brand-slogan">Monocromo: Negro, Gris, Beige & Blanco</div>
+                    <button onclick="showPage('lineas-main')" class="btn-primary">Descubrir</button>
+                </div>
+            </div>
+            <div class="slider-controls">
+                <div class="dot active" onclick="setSlide(0)"></div>
+                <div class="dot" onclick="setSlide(1)"></div>
+                <div class="dot" onclick="setSlide(2)"></div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN LÍNEAS DE DISEÑO ARRIBA -->
+        <section>
+            <h2 class="section-title">Líneas de Diseño</h2>
+            <div class="lines-grid">
+                <div class="line-card" onclick="showPage('linea-esencial')">
+                    <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80" alt="Línea Esencial">
+                    <div class="line-overlay">
+                        <h3>Línea Esencial</h3>
+                        <p style="font-size: 12px; color: #ccc;">Prendas básicas de alto gramaje para el uso diario.</p>
+                    </div>
+                </div>
+                <div class="line-card" onclick="showPage('linea-signature')">
+                    <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=800&q=80" alt="Línea Signature">
+                    <div class="line-overlay">
+                        <h3>Línea Signature</h3>
+                        <p style="font-size: 12px; color: #ccc;">Cortes exclusivos con el sello de identidad DRAEV.</p>
+                    </div>
+                </div>
+                <div class="line-card" onclick="showPage('linea-collection')">
+                    <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&q=80" alt="Línea Collection">
+                    <div class="line-overlay">
+                        <h3>Línea Collection</h3>
+                        <p style="font-size: 12px; color: #ccc;">Piezas de edición limitada y sastrería urbana.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- PAGE: LINEAS MAIN -->
+    <div id="page-lineas-main" class="view-page">
+        <section>
+            <h2 class="section-title">Nuestras 3 Líneas de Diseño</h2>
+            <div class="lines-grid">
+                <div class="line-card" onclick="showPage('linea-esencial')">
+                    <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80" alt="Línea Esencial">
+                    <div class="line-overlay">
+                        <h3>Línea Esencial</h3>
+                        <span class="btn-primary" style="margin-top:10px; width:fit-content;">Ingresar a la línea</span>
+                    </div>
+                </div>
+                <div class="line-card" onclick="showPage('linea-signature')">
+                    <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=800&q=80" alt="Línea Signature">
+                    <div class="line-overlay">
+                        <h3>Línea Signature</h3>
+                        <span class="btn-primary" style="margin-top:10px; width:fit-content;">Ingresar a la línea</span>
+                    </div>
+                </div>
+                <div class="line-card" onclick="showPage('linea-collection')">
+                    <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&q=80" alt="Línea Collection">
+                    <div class="line-overlay">
+                        <h3>Línea Collection</h3>
+                        <span class="btn-primary" style="margin-top:10px; width:fit-content;">Ingresar a la línea</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- PAGE: LINEA ESENCIAL -->
+    <div id="page-linea-esencial" class="view-page">
+        <section>
+            <h2 class="section-title">Línea Esencial</h2>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 40px;">Básicos atemporales en paleta de tonos neutros.</p>
+            <div class="products-grid">
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=500&q=80" class="product-img">
+                    <div class="product-title">T-Shirt Heavyweight Off-White</div>
+                    <div class="product-price">$75.000 COP</div>
+                    <button class="btn-primary" style="width: 100%;" onclick="addToCart('T-Shirt Heavyweight Off-White', 75000)">Agregar al Carrito</button>
+                </div>
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=500&q=80" class="product-img">
+                    <div class="product-title">Hoodie Black Essential</div>
+                    <div class="product-price">$130.000 COP</div>
+                    <button class="btn-primary" style="width: 100%;" onclick="addToCart('Hoodie Black Essential', 130000)">Agregar al Carrito</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- PAGE: LINEA SIGNATURE -->
+    <div id="page-linea-signature" class="view-page">
+        <section>
+            <h2 class="section-title">Línea Signature</h2>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 40px;">Diseño vanguardista y siluetas con carácter único.</p>
+            <div class="products-grid">
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=500&q=80" class="product-img">
+                    <div class="product-title">Pantalón Cargo Grey Tech</div>
+                    <div class="product-price">$145.000 COP</div>
+                    <button class="btn-primary" style="width: 100%;" onclick="addToCart('Pantalón Cargo Grey Tech', 145000)">Agregar al Carrito</button>
+                </div>
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1578587018452-892bacefd3f2?auto=format&fit=crop&w=500&q=80" class="product-img">
+                    <div class="product-title">Buzo Signature Beige</div>
+                    <div class="product-price">$120.000 COP</div>
+                    <button class="btn-primary" style="width: 100%;" onclick="addToCart('Buzo Signature Beige', 120000)">Agregar al Carrito</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- PAGE: LINEA COLLECTION -->
+    <div id="page-linea-collection" class="view-page">
+        <section>
+            <h2 class="section-title">Línea Collection</h2>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 40px;">Ediciones limitadas de alta gama urbana.</p>
+            <div class="products-grid">
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=500&q=80" class="product-img">
+                    <div class="product-title">Chaqueta Tailored Black DRAEV</div>
+                    <div class="product-price">$210.000 COP</div>
+                    <button class="btn-primary" style="width: 100%;" onclick="addToCart('Chaqueta Tailored Black DRAEV', 210000)">Agregar al Carrito</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- PAGE: HISTORIA -->
+    <div id="page-historia" class="view-page">
+        <section style="max-width: 800px; margin: 0 auto;">
+            <h2 class="section-title">Nuestra Historia</h2>
+            <p style="margin-bottom: 20px; color: var(--text-muted);">
+                DRAEV nació de la visión de crear ropa urbana que proyecte autoridad sin estridencias. Inspirada en la arquitectura brutalista y el minimalismo contemporáneo, la marca rige su camino bajo el pilar de <strong>"Disciplina silenciosa, presencia absoluta"</strong>.
+            </p>
+            <p style="color: var(--text-muted);">
+                Producimos en lotes controlados priorizando materiales de alta densidad y cortes estructurales en tonos neutros como negro, gris, beige y blanco.
+            </p>
+        </section>
+    </div>
+
+    <!-- PAGE: QUIENES SOMOS -->
+    <div id="page-quienes-somos" class="view-page">
+        <section style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <h2 class="section-title">Quiénes Somos</h2>
+            <p style="font-size: 16px; color: var(--text-muted); line-height: 1.8;">
+                Somos un colectivo de diseño enfocado en redefinir el vestir moderno. Creemos que la verdadera elegancia reside en la simplicidad, el detalle técnico y la confianza de quien porta cada prenda.
+            </p>
+        </section>
+    </div>
+
+    <!-- PAGE: EQUIPO PORTAL -->
+    <div id="page-equipo-portal" class="view-page">
+        <section style="text-align: center;">
+            <h2 class="section-title">Equipo de Trabajo</h2>
+            <p style="color: var(--text-muted); margin-bottom: 30px;">Conoce las mentes detrás de la infraestructura creativa y operativa de DRAEV.</p>
+            <button class="btn-primary" onclick="showPage('equipo-detalle')">Ingresar a Perfiles del Equipo</button>
+        </section>
+    </div>
+
+    <!-- PAGE: EQUIPO DETALLE -->
+    <div id="page-equipo-detalle" class="view-page">
+        <section>
+            <h2 class="section-title">Directorio del Equipo</h2>
+            <div class="team-grid">
+                <div class="team-card">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80">
+                    <h3>Elena Rostova</h3>
+                    <span class="role">Directora Creativa</span>
+                    <p>Especialista en diseño textil vanguardista y dirección conceptual con más de 8 años en la industria de la moda contemporánea.</p>
+                </div>
+                <div class="team-card">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80">
+                    <h3>Marcus Vance</h3>
+                    <span class="role">Jefe de Patronaje & Confección</span>
+                    <p>Master en estructuras textiles urbanas. Encargado de garantizar el calce y la durabilidad característicos de las prendas DRAEV.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- PAGE: TRABAJA CON NOSOTROS PORTAL -->
+    <div id="page-trabaja-portal" class="view-page">
+        <section style="text-align: center;">
+            <h2 class="section-title">Únete a DRAEV</h2>
+            <p style="color: var(--text-muted); margin-bottom: 30px;">Buscamos talento apasionado por la moda urbana, el diseño y la excelencia operativa.</p>
+            <button class="btn-primary" onclick="showPage('trabaja-encuesta')">Ingresar a la Solicitud y Encuesta</button>
+        </section>
+    </div>
+
+    <!-- PAGE: TRABAJA CON NOSOTROS ENCUESTA -->
+    <div id="page-trabaja-encuesta" class="view-page">
+        <section>
+            <h2 class="section-title">Postulación de Curriculum</h2>
+            <div class="form-container">
+                <form onsubmit="alert('¡Postulación enviada exitosamente a draevsstore@gmail.com!'); showPage('inicio'); return false;">
+                    <div class="form-group">
+                        <label>Nombre Completo</label>
+                        <input type="text" required placeholder="Tu nombre">
+                    </div>
+                    <div class="form-group">
+                        <label>Correo Electrónico</label>
+                        <input type="email" required placeholder="ejemplo@correo.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Teléfono / WhatsApp</label>
+                        <input type="tel" required placeholder="+57 300 000 0000">
+                    </div>
+                    <div class="form-group">
+                        <label>Área de Interés</label>
+                        <select required>
+                            <option value="">Selecciona</option>
+                            <option>Diseño & Confección</option>
+                            <option>Marketing & Redes Sociales</option>
+                            <option>Atención al Cliente & Ventas</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Encuesta: ¿Por qué quieres ser parte de DRAEV?</label>
+                        <textarea rows="3" required placeholder="Cuéntanos brevemente tu motivación..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Enlace a CV / Hoja de Vida / Portafolio (PDF Drive / LinkedIn)</label>
+                        <input type="url" required placeholder="https://">
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%;">Enviar Solicitud</button>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <!-- PAGE: AUTH (INICIAR SESIÓN / REGISTRO) -->
+    <div id="page-auth" class="view-page">
+        <section>
+            <h2 class="section-title" id="auth-title">Iniciar Sesión</h2>
+            <div class="form-container">
+                <!-- FORM LOGIN -->
+                <form id="form-login" onsubmit="alert('Sesión iniciada correctamente'); showPage('inicio'); return false;">
+                    <div class="form-group">
+                        <label>Correo Electrónico</label>
+                        <input type="email" required placeholder="tu@correo.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Contraseña</label>
+                        <input type="password" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%;">Ingresar</button>
+                    <p style="text-align: center; margin-top: 15px; font-size: 12px; color: var(--text-muted);">
+                        ¿No tienes cuenta? <a onclick="toggleAuthForm()" style="color: #fff; cursor: pointer; text-decoration: underline;">Regístrate aquí</a>
+                    </p>
+                </form>
+
+                <!-- FORM REGISTER -->
+                <form id="form-register" style="display: none;" onsubmit="alert('Registro exitoso. ¡Bienvenido a DRAEV!'); showPage('inicio'); return false;">
+                    <div class="form-group">
+                        <label>Nombre Completo</label>
+                        <input type="text" required placeholder="Tu nombre">
+                    </div>
+                    <div class="form-group">
+                        <label>Correo Electrónico</label>
+                        <input type="email" required placeholder="tu@correo.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Contraseña</label>
+                        <input type="password" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%;">Crear Cuenta</button>
+                    <p style="text-align: center; margin-top: 15px; font-size: 12px; color: var(--text-muted);">
+                        ¿Ya tienes cuenta? <a onclick="toggleAuthForm()" style="color: #fff; cursor: pointer; text-decoration: underline;">Inicia sesión</a>
+                    </p>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <!-- MODAL CARRITO -->
+    <div class="cart-modal" id="cart-modal">
+        <div class="cart-header">
+            <h3 style="font-size: 14px; letter-spacing: 2px; text-transform: uppercase;">Tu Carrito</h3>
+            <span class="close-btn" onclick="toggleCart()">&times;</span>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <p style="color: var(--text-muted); font-size: 12px;">Tu carrito está vacío.</p>
+        </div>
+        <div style="border-top: 1px solid var(--border-color); padding-top: 15px; margin-top: 10px;">
+            <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 15px;">
+                <span>Total:</span>
+                <span id="cart-total">$0 COP</span>
+            </div>
+            <button class="btn-primary" style="width: 100%;" onclick="openCheckout()">Pagar Ahora</button>
+        </div>
+    </div>
+
+    <!-- MODAL PASARELA DE PAGO EJECUTABLE -->
+    <div class="checkout-modal" id="checkout-modal">
+        <div class="checkout-content">
+            <span class="close-btn" style="position: absolute; top: 15px; right: 20px;" onclick="closeCheckout()">&times;</span>
+            <h3 style="font-size: 16px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; text-align: center;">Pasarela de Pago Segura</h3>
+            
+            <form onsubmit="processPayment(event)">
+                <div class="form-group">
+                    <label>Método de Pago</label>
+                    <select id="payment-method" onchange="togglePaymentFields()" required>
+                        <option value="card">Tarjeta de Crédito / Débito</option>
+                        <option value="wallet">Billetera Digital (Nequi / Daviplata / PSE)</option>
+                    </select>
+                </div>
+
+                <!-- CAMPOS TARJETA -->
+                <div id="card-fields">
+                    <div class="form-group">
+                        <label>Número de Tarjeta</label>
+                        <input type="text" placeholder="4500 0000 0000 0000" maxlength="19">
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <div class="form-group" style="flex:1;">
+                            <label>Expiración</label>
+                            <input type="text" placeholder="MM/AA">
+                        </div>
+                        <div class="form-group" style="flex:1;">
+                            <label>CVC</label>
+                            <input type="password" placeholder="123" maxlength="4">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CAMPOS BILLETERA DIGITAL -->
+                <div id="wallet-fields" style="display: none;">
+                    <div class="form-group">
+                        <label>Número de Celular (Nequi/Daviplata)</label>
+                        <input type="tel" placeholder="300 000 0000">
+                    </div>
+                </div>
+
+                <div style="margin-top: 10px; font-weight: bold; font-size: 14px; margin-bottom: 15px;">
+                    Total a pagar: <span id="checkout-total">$0 COP</span>
+                </div>
+
+                <button type="submit" class="btn-primary" style="width: 100%;" id="pay-btn">Confirmar y Pagar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- FOOTER CORPORATIVO -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>DRAEV HQ</h4>
+                <p>Disciplina silenciosa, presencia absoluta.</p>
+                <p style="font-size: 11px;">Moda urbana minimalista en paleta monocromática.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Contacto Corporativo</h4>
+                <p><i class="fa-regular fa-envelope"></i> draevsstore@gmail.com</p>
+                <p><i class="fa-brands fa-whatsapp"></i> +57 324 5890668</p>
+            </div>
+            <div class="footer-col">
+                <h4>Síguenos</h4>
+                <p>@draev.col</p>
+                <div class="social-links">
+                    <a href="https://instagram.com/draev.col" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://facebook.com/draev.col" target="_blank" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://tiktok.com/@draev.col" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2026 draev.col. Todos los derechos reservados.
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // ROUTING / PAGES
+        function showPage(pageId) {
+            document.querySelectorAll('.view-page').forEach(page => {
+                page.classList.remove('active');
+            });
+            const target = document.getElementById('page-' + pageId);
+            if(target) {
+                target.classList.add('active');
+                window.scrollTo(0,0);
+            }
+        }
+
+        // SLIDER
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+
+        function setSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+            currentSlide = index;
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+
+        setInterval(() => {
+            let next = (currentSlide + 1) % slides.length;
+            setSlide(next);
+        }, 5000);
+
+        // CARRITO
+        let cart = [];
+
+        function toggleCart() {
+            document.getElementById('cart-modal').classList.toggle('open');
+        }
+
+        function addToCart(title, price) {
+            cart.push({title, price});
+            updateCart();
+            toggleCart();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function updateCart() {
+            const container = document.getElementById('cart-items');
+            const count = document.getElementById('cart-count');
+            const total = document.getElementById('cart-total');
+
+            count.innerText = cart.length;
+
+            if(cart.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-muted); font-size: 12px;">Tu carrito está vacío.</p>';
+                total.innerText = '$0 COP';
+                return;
+            }
+
+            let sum = 0;
+            let html = '';
+            cart.forEach((item, i) => {
+                sum += item.price;
+                html += `
+                    <div class="cart-item">
+                        <div>
+                            <div style="font-size: 12px; font-weight: 600;">${item.title}</div>
+                            <div style="font-size: 11px; color: var(--text-muted);">$${item.price.toLocaleString()} COP</div>
+                        </div>
+                        <i class="fa-solid fa-trash" style="color: #ef4444; cursor: pointer; font-size: 12px;" onclick="removeFromCart(${i})"></i>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+            total.innerText = '$' + sum.toLocaleString() + ' COP';
+        }
+
+        // PASARELA DE PAGO
+        function openCheckout() {
+            if(cart.length === 0) {
+                alert('El carrito está vacío.');
+                return;
+            }
+            let sum = cart.reduce((acc, item) => acc + item.price, 0);
+            document.getElementById('checkout-total').innerText = '$' + sum.toLocaleString() + ' COP';
+            toggleCart();
+            document.getElementById('checkout-modal').classList.add('active');
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkout-modal').classList.remove('active');
+        }
+
+        function togglePaymentFields() {
+            const method = document.getElementById('payment-method').value;
+            if(method === 'card') {
+                document.getElementById('card-fields').style.display = 'block';
+                document.getElementById('wallet-fields').style.display = 'none';
+            } else {
+                document.getElementById('card-fields').style.display = 'none';
+                document.getElementById('wallet-fields').style.display = 'block';
+            }
+        }
+
+        function processPayment(e) {
+            e.preventDefault();
+            const btn = document.getElementById('pay-btn');
+            btn.innerText = 'Procesando pago...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                alert('¡Pago procesado con éxito! Recibirás la confirmación en tu correo.');
+                cart = [];
+                updateCart();
+                closeCheckout();
+                btn.innerText = 'Confirmar y Pagar';
+                btn.disabled = false;
+                showPage('inicio');
+            }, 2000);
+        }
+
+        // AUTH TOGGLE
+        function toggleAuthForm() {
+            const login = document.getElementById('form-login');
+            const reg = document.getElementById('form-register');
+            const title = document.getElementById('auth-title');
+
+            if(login.style.display === 'none') {
+                login.style.display = 'block';
+                reg.style.display = 'none';
+                title.innerText = 'Iniciar Sesión';
+            } else {
+                login.style.display = 'none';
+                reg.style.display = 'block';
+                title.innerText = 'Crear Cuenta';
+            }
+        }
+    </script>
+</body>
+</html>
